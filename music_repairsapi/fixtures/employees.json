@@ -1,0 +1,9 @@
+[
+    {
+        "model": "music_repairsapi.employee",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "specialty": "Guitars"
+        }}
+]

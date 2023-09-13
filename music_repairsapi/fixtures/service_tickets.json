@@ -1,0 +1,18 @@
+[
+    {
+        "model": "music_repairsapi.serviceticket",
+        "pk": 1,
+        "fields": {
+            "customer": 1,
+            "employee": 1,
+            "instrument": 1,
+            "description": "I want a setup for my Gibson les paul, and to add a bigsby tremelo system!",
+            "notes": "I have string in the case I want to use. I will bring the bigsby in a separate box.",
+            "date": "2023-09-10",
+            "modification": true,
+            "repair": false,
+            "setup": true,
+            "priority": false
+        }
+    }
+]

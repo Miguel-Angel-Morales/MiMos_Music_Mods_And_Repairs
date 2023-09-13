@@ -1,0 +1,9 @@
+[
+    {
+        "model": "music_repairsapi.customer",
+        "pk": 1,
+        "fields": {
+            "user": 1
+        }
+    }
+]
