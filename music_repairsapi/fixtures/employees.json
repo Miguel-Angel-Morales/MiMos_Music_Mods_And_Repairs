@@ -4,6 +4,8 @@
         "pk": 1,
         "fields": {
             "user": 1,
-            "specialty": "Guitars"
+            "specialty": "Guitars",
+            "first_name": "Florentina",
+            "last_name": "Morales"
         }}
 ]

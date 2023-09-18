@@ -3,7 +3,9 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from music_repairsapi.models import ServiceTicket, Employee, Customer
+from music_repairsapi.models import ServiceTicket, Employee, Customer, Instrument
+from django.utils import timezone
+
 
 
 class ServiceTicketView(ViewSet):
@@ -53,15 +55,42 @@ class ServiceTicketView(ViewSet):
         Returns:
             Response: JSON serializer representation of newly created service ticket
         """
-        new_ticket = ServiceTicket()
-        new_ticket.customer = Customer.objects.get(user=request.auth.user)
-        new_ticket.description = request.data['description']
-        new_ticket.priority = request.data['priority']
+        customer = Customer.objects.get(user=request.auth.user)
+
+        # Assuming you have a user field in your Employee model to link it to the User model
+        try:
+            employee = Employee.objects.get(user=request.auth.user)
+        except Employee.DoesNotExist:
+            return Response({"error": "Employee with the given user does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+        instrument_pk = request.data.get('instrument')
+        
+        try:
+            instrument = Instrument.objects.get(pk=instrument_pk)
+        except Instrument.DoesNotExist:
+            return Response({"error": "Instrument with the given ID does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+        new_ticket = ServiceTicket(
+            customer=customer,
+            employee=employee,
+            instrument=instrument,
+            description=request.data['description'],
+            notes=request.data['notes'],
+            date=request.data["date"],
+            modification=request.data['modification'],
+            repair=request.data['repair'],
+            setup=request.data['setup'],
+            priority=request.data['priority']
+        )
+
+        # Save the new service ticket
         new_ticket.save()
 
         serializer = ServiceTicketSerializer(new_ticket, many=False)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
 
     def update(self, request, pk=None):
         # "Handle Put request for single customer"
@@ -99,14 +128,14 @@ class ServiceTicketView(ViewSet):
 class TicketEmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ('id', 'user', 'specialty', 'full_name')
+        fields = ('id', 'user', 'specialty')
 
 
 # For employees to see the Full_name property
 class TicketCustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ('id', 'user', 'full_name')
+        fields = ('id', 'user')
 
 
 class ServiceTicketSerializer(serializers.ModelSerializer):
