@@ -58,10 +58,6 @@ class ServiceTicketView(ViewSet):
         customer = Customer.objects.get(user=request.auth.user)
 
         # Assuming you have a user field in your Employee model to link it to the User model
-        try:
-            employee = Employee.objects.get(user=request.auth.user)
-        except Employee.DoesNotExist:
-            return Response({"error": "Employee with the given user does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
         instrument_pk = request.data.get('instrument')
         
@@ -72,7 +68,6 @@ class ServiceTicketView(ViewSet):
 
         new_ticket = ServiceTicket(
             customer=customer,
-            employee=employee,
             instrument=instrument,
             description=request.data['description'],
             notes=request.data['notes'],
