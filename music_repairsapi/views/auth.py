@@ -78,7 +78,7 @@ def register_user(request):
         new_user.is_staff = True
         new_user.save()
         account = Employee.objects.create(
-            specialty=request.data['specialty'],
+            insrtument=request.data['insrtument'],
             user=new_user
         )
     elif account_type == 'customer':

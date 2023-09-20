@@ -7,8 +7,6 @@ from rest_framework import serializers, status
 from music_repairsapi.models import Instrument
 
 
-
-
 class InstrumentView(ViewSet):
 
     def list(self, request):

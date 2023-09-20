@@ -1,0 +1,51 @@
+[
+    {
+        "model": "music_repairsapi.specialty",
+        "pk": 1,
+        "fields": {
+            "specialty_name": "Guitar"
+        }
+    },
+    {
+        "model": "music_repairsapi.specialty",
+        "pk": 2,
+        "fields": {
+            "specialty_name": "Bass"
+        }
+    },
+    {
+        "model": "music_repairsapi.specialty",
+        "pk": 3,
+        "fields": {
+            "specialty_name": "Ukulele"
+        }
+    },
+    {
+        "model": "music_repairsapi.specialty",
+        "pk": 4,
+        "fields": {
+            "specialty_name": "Drums"
+        }
+    },
+    {
+        "model": "music_repairsapi.specialty",
+        "pk": 5,
+        "fields": {
+            "specialty_name": "Piano"
+        }
+    },
+    {
+        "model": "music_repairsapi.specialty",
+        "pk": 6,
+        "fields": {
+            "specialty_name": "Amplifier"
+        }
+    },
+    {
+        "model": "music_repairsapi.specialty",
+        "pk": 7,
+        "fields": {
+            "specialty_name": "Microphone"
+        }
+    }
+]

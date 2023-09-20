@@ -20,13 +20,14 @@ from django.urls import path
 from music_repairsapi.views import register_user, login_user
 from django.conf.urls import include
 from rest_framework import routers
-from music_repairsapi.views import CustomerView, EmployeeView, InstrumentView, ServiceTicketView
+from music_repairsapi.views import CustomerView, EmployeeView, InstrumentView, SpecialtyView, ServiceTicketView
 
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'customers', CustomerView, 'customer')
 router.register(r'employees', EmployeeView, 'employee')
 router.register(r'instruments', InstrumentView, 'instrument')
+router.register(r'specialties', SpecialtyView, 'specialty')
 router.register(r'servicetickets', ServiceTicketView, 'serviceticket')
 
 
