@@ -6,7 +6,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from music_repairsapi.models import Customer, Employee
+from music_repairsapi.models import Customer, Employee, Specialty
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -37,6 +38,7 @@ def login_user(request):
         # Bad login details were provided. So we can't log the user in.
         data = {'valid': False}
         return Response(data)
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -77,10 +79,16 @@ def register_user(request):
     if account_type == 'employee':
         new_user.is_staff = True
         new_user.save()
+
+        specialty_id = request.data['specialty']
+        specialty = Specialty.objects.get(id=specialty_id)
+
         account = Employee.objects.create(
-            insrtument=request.data['insrtument'],
+            specialty=specialty,
             user=new_user
         )
+
+        
     elif account_type == 'customer':
         account = Customer.objects.create(
             user=new_user

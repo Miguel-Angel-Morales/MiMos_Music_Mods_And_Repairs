@@ -7,7 +7,6 @@ from music_repairsapi.models import ServiceTicket, Employee, Customer, Instrumen
 from django.utils import timezone
 
 
-
 class ServiceTicketView(ViewSet):
     """MiMos Music Mods and Repairs API service_ticket_view"""
 
@@ -138,8 +137,14 @@ class ServiceTicketSerializer(serializers.ModelSerializer):
     employee = TicketEmployeeSerializer(many=False)
     customer = TicketCustomerSerializer(many=False)
 
+
     class Meta:
         model = ServiceTicket
         fields = ('id', 'customer', 'employee', 'instrument', 'description', 'notes', 'date', 'modification', 'repair',
-                  'setup', 'priority')
+                    'setup', 'priority')
         depth = 1
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['date'] = instance.date.strftime('%Y-%m-%d')  # Format the date
+        return data

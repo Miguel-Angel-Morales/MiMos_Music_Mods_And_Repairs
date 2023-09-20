@@ -4,5 +4,10 @@ from django.contrib.auth.models import User
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name= models.CharField(max_length=255, default="Customer First Name")
-    last_name= models.CharField(max_length=255, default="Customer Last Name")
+    first_name = models.CharField(
+        max_length=255, default="Customer First Name")
+    last_name = models.CharField(max_length=255, default="Customer Last Name")
+
+    @property
+    def full_name(self):
+        return f'{self.user.first_name} {self.user.last_name}'
