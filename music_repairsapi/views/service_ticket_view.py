@@ -4,7 +4,6 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from music_repairsapi.models import ServiceTicket, Employee, Customer, Instrument
-from django.utils import timezone
 
 
 class ServiceTicketView(ViewSet):
@@ -59,7 +58,7 @@ class ServiceTicketView(ViewSet):
         # Assuming you have a user field in your Employee model to link it to the User model
 
         instrument_pk = request.data.get('instrument')
-        
+
         try:
             instrument = Instrument.objects.get(pk=instrument_pk)
         except Instrument.DoesNotExist:
@@ -84,23 +83,27 @@ class ServiceTicketView(ViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
-
-    def update(self, request, pk=None):
-        # "Handle Put request for single customer"
-
-        # Returns:
-        # Response -- No response body. Just 204 status code.
-
-        # Select the targeted Ticket using PK
+    def update(self, request, pk):
         ticket = ServiceTicket.objects.get(pk=pk)
-        # Get the employee id from the client request
-        employee_id = request.data['employee']
-        # Select the employee from the database using that id
-        assigned_employee = Employee.objects.get(pk=employee_id)
-        # Assign the Employee instance to the employee property to the ticket
-        ticket.employee = assigned_employee
-        # Save the updated ticket
+
+        customer = Customer.objects.get(user=request.auth.user)
+        ticket.customer = customer
+
+        instrument_id = request.data.get('instrument')
+        try:
+            instrument = Instrument.objects.get(pk=instrument_id)
+        except Instrument.DoesNotExist:
+            return Response({"error": "Instrument with the given ID does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+        ticket.instrument = instrument
+
+        ticket.description = request.data['description']
+        ticket.notes = request.data['notes']
+        ticket.date = request.data["date"]
+        ticket.modification = request.data['modification']
+        ticket.repair = request.data['repair']
+        ticket.setup = request.data['setup']
+        ticket.priority = request.data['priority']
         ticket.save()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
@@ -137,14 +140,8 @@ class ServiceTicketSerializer(serializers.ModelSerializer):
     employee = TicketEmployeeSerializer(many=False)
     customer = TicketCustomerSerializer(many=False)
 
-
     class Meta:
         model = ServiceTicket
         fields = ('id', 'customer', 'employee', 'instrument', 'description', 'notes', 'date', 'modification', 'repair',
-                    'setup', 'priority')
+                  'setup', 'priority')
         depth = 1
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['date'] = instance.date.strftime('%Y-%m-%d')  # Format the date
-        return data

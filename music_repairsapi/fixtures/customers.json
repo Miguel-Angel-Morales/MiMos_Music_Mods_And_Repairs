@@ -3,9 +3,7 @@
         "model": "music_repairsapi.customer",
         "pk": 1,
         "fields": {
-            "user": 1,
-            "first_name": "Ace",
-            "last_name": "Tele"
+            "user": 1
         }
     }
 ]

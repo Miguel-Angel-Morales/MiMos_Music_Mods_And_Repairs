@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+from datetime import date
 
 class ServiceTicket(models.Model):
     customer = models.ForeignKey("Customer", on_delete=models.CASCADE, related_name='submitted_tickets')
@@ -7,7 +7,7 @@ class ServiceTicket(models.Model):
     instrument = models.ForeignKey("Instrument", on_delete=models.CASCADE, related_name='chosen_instrument')
     description = models.CharField(max_length=20000, default="")
     notes = models.CharField(max_length=20000, default="")
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateField(default= date.today)
     modification = models.BooleanField(default=False)  # Default value can be True or False
     repair = models.BooleanField(default=False)
     setup = models.BooleanField(default=False)
